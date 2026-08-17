@@ -1,4 +1,4 @@
-package nl.sogyo.mancala.domain; // Pas aan naar jouw package structuur
+package nl.sogyo.mancala.api; // Pas aan naar jouw package structuur
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,5 +1,6 @@
-package nl.sogyo.mancala.domain;
+package nl.sogyo.mancala.api;
 
+import nl.sogyo.mancala.domain.Facade;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
