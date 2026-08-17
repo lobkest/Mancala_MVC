@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+domain,nl.sogyo.mancala.domain.exceptions,CanNotPlayThisPocket,0,4,0,0,0,2,0,1,0,1
+domain,nl.sogyo.mancala.domain.exceptions,OngeldigBordException,0,4,0,0,0,2,0,1,0,1
+domain,nl.sogyo.mancala.domain.exceptions,GameOver,0,4,0,0,0,2,0,1,0,1
+domain,nl.sogyo.mancala.domain,MancalaPocket,2,118,0,10,1,32,1,14,1,9
+domain,nl.sogyo.mancala.domain,PocketTemplate,9,169,2,14,2,52,2,27,1,20
+domain,nl.sogyo.mancala.domain,Player,2,51,1,5,0,18,1,8,0,6
+domain,nl.sogyo.mancala.domain,Pocket,24,263,8,24,4,70,5,29,1,17

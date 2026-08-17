@@ -15,11 +15,11 @@ function Game() {
   useEffect(() => {
     async function fetchInitialBoard() {
       try {
-        const response = await fetch('http://localhost:8080/api/start'); 
+        const response = await fetch('http://localhost:8080/api/start');
         const data: BoardState = await response.json();
 
         console.log(data);
-      
+
         setBoard(data);
       } catch (error) {
         console.error("Fout bij het ophalen:", error);
@@ -38,10 +38,10 @@ function Game() {
       });
 
       if (!response.ok) {
-        const errorText = await response.text(); 
+        const errorText = await response.text();
         console.error(`[SERVER FOUT] Code: ${response.status}. Bericht van Java:`, errorText);
         console.error(`[FOUT DETAILS] Je klikte op kuiltje ${pitIndex}. Het aantal stenen in dit kuiltje was:`, board?.stonesArray[pitIndex - 1]);
-        
+
         return;
       }
 
@@ -59,8 +59,8 @@ function Game() {
   if (board.winner > 0) {
     return <GameOver winner={board.winner} />
   }
-  
-  
+
+
   return (
     <div>
       <h1>Spelbord maken hier</h1>

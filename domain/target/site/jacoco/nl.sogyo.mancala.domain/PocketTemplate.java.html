@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PocketTemplate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">domain</a> &gt; <a href="index.source.html" class="el_package">nl.sogyo.mancala.domain</a> &gt; <span class="el_source">PocketTemplate.java</span></div><h1>PocketTemplate.java</h1><pre class="source lang-java linenums">package nl.sogyo.mancala.domain;
+
+import nl.sogyo.mancala.domain.exceptions.GameOver;
+import nl.sogyo.mancala.domain.exceptions.OngeldigBordException;
+import nl.sogyo.mancala.domain.exceptions.CanNotPlayThisPocket;
+
+
+public abstract class PocketTemplate {
+    private final int pocketNr;
+    int stones;
+    private PocketTemplate nextPocket;
+    private final Player turn;
+
+<span class="fc" id="L14">    PocketTemplate() {</span>
+<span class="fc" id="L15">        this.pocketNr = 1;</span>
+<span class="fc" id="L16">        this.turn = new Player();</span>
+<span class="fc" id="L17">        this.stones = 4;</span>
+<span class="fc" id="L18">    }</span>
+
+<span class="fc" id="L20">    PocketTemplate(int pocketNr, Player turn, int stones) {</span>
+<span class="fc" id="L21">        this.pocketNr = pocketNr;</span>
+<span class="fc" id="L22">        this.turn = turn;</span>
+<span class="fc" id="L23">        this.stones = stones;</span>
+<span class="fc" id="L24">    }</span>
+
+    void setNextPocket(PocketTemplate nextPocket) {
+<span class="fc" id="L27">        this.nextPocket = nextPocket;</span>
+<span class="fc" id="L28">    }</span>
+
+    public PocketTemplate getNextPocket() {
+<span class="fc" id="L31">        return this.nextPocket;</span>
+    }
+
+    abstract PocketTemplate createNextPocket(int nextNr, PocketTemplate firstPocket, Player turn);
+
+    PocketTemplate getPocketFinder(int i) {
+<span class="fc" id="L37">        return getPocketFinder(i, this);</span>
+    }
+
+    void receiveStones(int stonesPassedOn) {
+<span class="fc" id="L41">        depositStoneAndPass(stonesPassedOn);</span>
+<span class="fc" id="L42">    }</span>
+
+    abstract void passRemainingStones(int remainingStones);
+
+    void depositStoneAndPass(int stonesPassedOn) {
+<span class="fc" id="L47">        this.stones++;</span>
+<span class="fc" id="L48">        stonesPassedOn--;</span>
+
+<span class="fc" id="L50">        passRemainingStones(stonesPassedOn);</span>
+<span class="fc" id="L51">    }</span>
+
+    private PocketTemplate getPocketFinder(int i, PocketTemplate startPocket) {
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (this.pocketNr == i) {</span>
+<span class="fc" id="L55">            return this;</span>
+        }
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (this.nextPocket == startPocket) {</span>
+<span class="fc" id="L58">            throw new OngeldigBordException();</span>
+        }
+<span class="fc" id="L60">        return this.nextPocket.getPocketFinder(i, startPocket);</span>
+    }
+
+    void determineIfGameIsOver() {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        int activePlayerStartNr = this.getTurn().isTurnOfThisPlayer() ? 1 : 8;</span>
+<span class="fc" id="L65">        PocketTemplate activePlayerStartPocket = getPocketFinder(activePlayerStartNr);</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (activePlayerStartPocket.isSideEmpty()) {</span>
+<span class="nc" id="L68">            gameFinished();</span>
+        }
+<span class="fc" id="L70">    }</span>
+
+    abstract boolean isSideEmpty();
+
+    abstract boolean isCurrentTurnSideEmpty();
+
+    private void gameFinished() {
+<span class="fc" id="L77">        clearAllSideStonesToMancalas();</span>
+<span class="fc" id="L78">        this.turn.setGameOver();</span>
+<span class="fc" id="L79">        throw new GameOver();</span>
+    }
+
+    abstract void clearAllSideStonesToMancalas();
+
+    public int getWhoIsTheWinner(){
+<span class="fc" id="L85">        PocketTemplate PlayerOne = getPocketFinder(1);</span>
+<span class="fc" id="L86">        PocketTemplate PlayerTwo = getPocketFinder(8);</span>
+<span class="fc" id="L87">        int scorePlayerOne = PlayerOne.getWhatIsTheScore();</span>
+<span class="fc" id="L88">        int scorePlayerTwo = PlayerTwo.getWhatIsTheScore();</span>
+<span class="fc bfc" id="L89" title="All 4 branches covered.">        return (scorePlayerOne &gt; scorePlayerTwo) ? 1 : (scorePlayerTwo &gt; scorePlayerOne) ? 2 : 0;</span>
+    }
+
+    private int getWhatIsTheScore(){
+<span class="fc" id="L93">        PocketTemplate myMancala = findMyMancala();</span>
+<span class="fc" id="L94">        return myMancala.getStonesAmount();</span>
+    }
+
+    void setStones(int amount) {
+<span class="fc" id="L98">        this.stones = amount;</span>
+<span class="fc" id="L99">    }</span>
+
+//    PocketTemplate findMyMancala() {
+//        if (this.nextPocket instanceof MancalaPocket) {
+//            return this.nextPocket;
+//        }
+//        return this.nextPocket.findMyMancala();
+//    }
+
+    public int getStonesAmount(){
+<span class="fc" id="L109">        return this.stones;</span>
+    }
+
+    Player getTurn(){
+<span class="fc" id="L113">        return this.turn;</span>
+    }
+
+    boolean isTurnOfThisPlayer(){
+<span class="fc" id="L117">        return this.turn.isTurnOfThisPlayer();</span>
+    }
+
+    // just for client for now
+    public int getWhoseTurnIsIt(){
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        return this.isTurnOfThisPlayer() ? 1 : 2;</span>
+    }
+
+    int getPocketNr(){
+<span class="fc" id="L126">        return this.pocketNr;</span>
+    }
+
+    void setChangeTurn(){
+<span class="fc" id="L130">        this.turn.setChangeTurn();</span>
+<span class="fc" id="L131">    }</span>
+
+    void setAddStones(int amount){
+<span class="fc" id="L134">        this.stones += amount;</span>
+<span class="fc" id="L135">    }</span>
+
+    PocketTemplate stepForward(int steps) {
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (steps == 0) {</span>
+<span class="fc" id="L139">            return this;</span>
+        }
+<span class="fc" id="L141">        return this.nextPocket.stepForward(steps - 1);</span>
+    }
+
+    abstract PocketTemplate findMyMancala();
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

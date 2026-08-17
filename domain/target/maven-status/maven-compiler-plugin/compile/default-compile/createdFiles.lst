@@ -1,0 +1,7 @@
+nl\sogyo\mancala\domain\exceptions\GameOver.class
+nl\sogyo\mancala\domain\PocketTemplate.class
+nl\sogyo\mancala\domain\exceptions\OngeldigBordException.class
+nl\sogyo\mancala\domain\Pocket.class
+nl\sogyo\mancala\domain\exceptions\CanNotPlayThisPocket.class
+nl\sogyo\mancala\domain\Player.class
+nl\sogyo\mancala\domain\MancalaPocket.class
