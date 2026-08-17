@@ -1,28 +1,32 @@
 import { useState } from 'react'
 import mancalaimage from './assets/mancala.jpg'
 import './App.css'
+import Game from './game.tsx'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [isPlaying, setIsPlaying] = useState(false)
 
   return (
-    <header>
-      <h1>Welcome to Mancala</h1>
-      <img src={mancalaimage} alt="Mancala bord" className="mancala-foto" />
+    <div lang="en">
       <div>
-        <a href="https://reactjs.org" target="_blank">
-          Learn React
-        </a>
+        <h1>Welcome to Mancala</h1>
+      
       </div>
+
       <div>
-        use count and setcount here: {count}
-        <button onClick={() => setCount((count) => count + 1)}>+</button>
-        <button onClick={() => setCount((count) => count - 1)}>-</button>
+        {isPlaying ? (
+          <Game />
+        ) : (
+          <div>
+            <img src={mancalaimage} alt="Mancala bord" className="mancala-foto" />
+            <button onClick={() => setIsPlaying(true)}>Start Game</button>
+          </div>
+        )}
       </div>
-      <div>
-        <button onClick={() => game.tsx}>Start Mancala</button>
-      </div>
-    </header>
+
+    </div>
   )
 }
 
